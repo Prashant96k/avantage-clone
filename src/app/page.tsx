@@ -1,9 +1,7 @@
 'use client';
-
 import Hero from '../components/Hero';
 import SearchBar from '../components/SearchBar';
 import FeaturedCard from '../components/FeaturedCard';
-import FeaturedCarousel from '../components/FeaturedCarousel';
 import Footer from '../components/Footer';
 import { useState, useMemo } from 'react';
 
@@ -75,15 +73,11 @@ export default function Page() {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
-      {/* Hero Section */}
       <Hero />
-
-      {/* Search Bar */}
       <div className="relative -mt-10 mb-6">
         <SearchBar onSearch={setQuery} />
       </div>
 
-      {/* Featured Carousel */}
       <section id="services" className="py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between">
@@ -98,8 +92,10 @@ export default function Page() {
             </a>
           </div>
 
-          <div className="mt-8">
-            <FeaturedCarousel items={results} />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {results.map((item, idx) => (
+              <FeaturedCard key={idx} item={item} />
+            ))}
           </div>
 
           {results.length === 0 && (
@@ -110,7 +106,6 @@ export default function Page() {
         </div>
       </section>
 
-      
       <section className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="grid gap-6 sm:grid-cols-3">
@@ -119,7 +114,7 @@ export default function Page() {
               { k: 'Client NPS', v: '71' },
               { k: 'On-time Delivery', v: '98%' },
             ].map((s, i) => (
-              <div key={i} className="rounded-xl ring-1 ring-slate-900/10 bg-slate-50 p-6 text-center hover:scale-105 transition-transform duration-300">
+              <div key={i} className="rounded-xl ring-1 ring-slate-900/10 bg-slate-50 p-6 text-center">
                 <div className="text-3xl font-bold text-slate-900">{s.v}</div>
                 <div className="mt-1 text-sm text-slate-600">{s.k}</div>
               </div>
@@ -138,7 +133,6 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

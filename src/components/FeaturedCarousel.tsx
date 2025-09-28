@@ -17,9 +17,9 @@ interface Props {
 export default function FeaturedCarousel({ items }: Props) {
   return (
     <div className="overflow-x-auto py-4">
-      <div className="flex gap-4 min-w-max px-4">
+      <div className="flex gap-6 px-4 min-w-max">
         {items.map((item, idx) => (
-          <div key={idx} className="min-w-[250px] flex-shrink-0">
+          <div key={idx} className="w-[300px] flex-shrink-0">
             <FeaturedCard item={item} />
           </div>
         ))}
