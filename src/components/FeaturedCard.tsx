@@ -1,9 +1,14 @@
+'use client';
+
+import React from 'react';
+import Image from 'next/image';
+
 type DataItem = {
-  icon: 'strategy' | 'growth' | string;
+  icon: string;
   title: string;
   desc: string;
   points: string[];
-  tags?: string[];
+  query?: string; // for highlighting
 };
 
 interface Props {
@@ -11,16 +16,43 @@ interface Props {
 }
 
 export default function FeaturedCard({ item }: Props) {
+  const highlightText = (text: string) => {
+    if (!item.query) return text;
+    const regex = new RegExp(`(${item.query})`, 'gi');
+    return text.split(regex).map((part, idx) =>
+      regex.test(part) ? (
+        <span key={idx} className="text-blue-600 font-semibold">{part}</span>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition">
-      <div className="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 mb-4 text-sky-700 font-bold text-lg">
-        {item.icon === 'strategy' ? 'S' : 'G'}
+    <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 p-6 flex flex-col h-full">
+      {/* Icon */}
+      <div className="w-12 h-12 mb-4 flex items-center justify-center">
+        <Image
+          src={item.icon}
+          alt={item.title}
+          width={48}
+          height={48}
+          className="object-contain"
+        />
       </div>
-      <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
-      <p className="mt-2 text-sm text-slate-600">{item.desc}</p>
-      <ul className="mt-4 list-disc list-inside text-slate-500 text-sm space-y-1">
-        {item.points.map((p, idx) => (
-          <li key={idx}>{p}</li>
+
+      {/* Title */}
+      <h3 className="text-lg font-semibold text-slate-900 mb-2">
+        {highlightText(item.title)}
+      </h3>
+
+      {/* Description */}
+      <p className="text-gray-600 mb-4">{highlightText(item.desc)}</p>
+
+      {/* Bullet Points */}
+      <ul className="text-gray-500 text-sm list-disc list-inside space-y-1">
+        {item.points.map((point, idx) => (
+          <li key={idx}>{highlightText(point)}</li>
         ))}
       </ul>
     </div>

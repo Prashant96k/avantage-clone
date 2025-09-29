@@ -67,30 +67,58 @@ export default function Page() {
       <Hero />
 
       {/* Search Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 mb-10">
-        <input
-          type="text"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          placeholder="Search services..."
-          className="w-full p-4 rounded-xl shadow-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500"
+<div className="relative z-10 max-w-3xl mx-auto mt-8 mb-12">
+  <div className="relative">
+    {/* Search Icon */}
+    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <svg
+        className="w-5 h-5 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
         />
-      </div>
+      </svg>
+    </div>
+
+    {/* Input */}
+    <input
+      type="text"
+      value={query}
+      onChange={e => setQuery(e.target.value)}
+      placeholder="Search services (e.g. market, ai, strategy)..."
+      className="w-full p-4 pl-10 rounded-2xl shadow-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white placeholder-gray-400 transition duration-300 hover:shadow-xl"
+    />
+  </div>
+</div>
+
+
+
+      {/* Result Count */}
+      {query && (
+        <p className="text-center text-gray-600 mb-6">
+          Showing <strong>{results.length}</strong> result{results.length !== 1 ? 's' : ''} for "<span className="text-sky-600">{query}</span>"
+        </p>
+      )}
 
       {/* Featured Cards Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {results.map((item, idx) => (
-            <FeaturedCard key={idx} item={item} />
-          ))}
-        </div>
-
-        {results.length === 0 && (
-          <div className="mt-8 rounded-lg border border-dashed border-gray-300 p-8 text-center text-gray-500">
-            No results found.
-          </div>
-        )}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {results.map((item, idx) => (
+          <FeaturedCard key={idx} item={{ ...item, query }} />
+        ))}
       </section>
+
+      {/* No Results */}
+      {results.length === 0 && (
+        <div className="mt-8 rounded-lg border border-dashed border-gray-300 p-8 text-center text-gray-500">
+          No results found.
+        </div>
+      )}
 
       {/* Footer */}
       <Footer />
